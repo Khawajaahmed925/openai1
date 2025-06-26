@@ -25,19 +25,34 @@ const validateAskRequest = (req, res, next) => {
 const validateWebhookResponse = (req, res, next) => {
   const { tool_call_id, output, thread_id, run_id } = req.body;
 
+  console.log('🔍 Validating webhook response:', {
+    tool_call_id: tool_call_id || 'MISSING',
+    output_length: output ? output.length : 'MISSING',
+    thread_id: thread_id || 'MISSING',
+    run_id: run_id || 'MISSING'
+  });
+
+  // ENHANCED: Check for empty strings as well as missing values
   const requiredFields = [
-    { field: 'tool_call_id', value: tool_call_id },
-    { field: 'output', value: output },
-    { field: 'thread_id', value: thread_id },
-    { field: 'run_id', value: run_id }
+    { field: 'tool_call_id', value: tool_call_id, valid: tool_call_id && tool_call_id.trim() !== '' },
+    { field: 'output', value: output, valid: output !== undefined && output !== null },
+    { field: 'thread_id', value: thread_id, valid: thread_id && thread_id.trim() !== '' },
+    { field: 'run_id', value: run_id, valid: run_id && run_id.trim() !== '' }
   ];
 
-  const missingFields = requiredFields.filter(item => !item.value);
+  const invalidFields = requiredFields.filter(item => !item.valid);
 
-  if (missingFields.length > 0) {
+  if (invalidFields.length > 0) {
+    console.error('❌ Webhook validation failed:', invalidFields.map(f => `${f.field}: ${f.value || 'missing'}`));
     return res.status(400).json({
-      error: 'Missing required fields',
-      details: `Missing: ${missingFields.map(f => f.field).join(', ')}`
+      error: 'Missing or invalid required fields',
+      details: `Invalid fields: ${invalidFields.map(f => f.field).join(', ')}`,
+      received_data: {
+        tool_call_id: tool_call_id || null,
+        thread_id: thread_id || null,
+        run_id: run_id || null,
+        output_present: !!output
+      }
     });
   }
 
@@ -49,6 +64,7 @@ const validateWebhookResponse = (req, res, next) => {
     });
   }
 
+  console.log('✅ Webhook validation passed');
   next();
 };
 
@@ -74,36 +90,55 @@ const errorHandler = (err, req, res, next) => {
   let message = 'Internal server error';
   let details = null;
 
-  // Handle specific error types
-  if (err.message.includes('OpenAI API authentication failed')) {
+  // FIXED: Safe error message handling with multiple fallbacks
+  let errorMessage = 'Unknown error occurred';
+  
+  if (err) {
+    if (typeof err === 'string') {
+      errorMessage = err;
+    } else if (err.message && typeof err.message === 'string') {
+      errorMessage = err.message;
+    } else if (err.details && typeof err.details === 'string') {
+      errorMessage = err.details;
+    } else if (err.error && typeof err.error === 'string') {
+      errorMessage = err.error;
+    }
+  }
+
+  // Handle specific error types with safe string operations
+  if (errorMessage.includes && errorMessage.includes('OpenAI API authentication failed')) {
     statusCode = 401;
     message = 'Authentication error';
     details = 'OpenAI API key is invalid or missing. Please check your configuration.';
-  } else if (err.message.includes('OpenAI API rate limit exceeded')) {
+  } else if (errorMessage.includes && errorMessage.includes('OpenAI API rate limit exceeded')) {
     statusCode = 429;
     message = 'Rate limit exceeded';
     details = 'Too many requests to OpenAI API. Please try again later.';
-  } else if (err.message.includes('Failed to create conversation thread')) {
+  } else if (errorMessage.includes && errorMessage.includes('Failed to create conversation thread')) {
     statusCode = 503;
     message = 'Service temporarily unavailable';
     details = 'Unable to connect to OpenAI services';
-  } else if (err.message.includes('Failed to run assistant')) {
+  } else if (errorMessage.includes && errorMessage.includes('Failed to run assistant')) {
     statusCode = 502;
     message = 'Assistant service error';
     details = 'Unable to process request with AI assistant';
-  } else if (err.message.includes('No pending tool call found')) {
+  } else if (errorMessage.includes && errorMessage.includes('while a run') && errorMessage.includes('is active')) {
+    statusCode = 409;
+    message = 'Thread busy';
+    details = 'Cannot add messages while assistant is processing. Please wait for the current operation to complete.';
+  } else if (errorMessage.includes && errorMessage.includes('No pending tool call found')) {
     statusCode = 404;
     message = 'Tool call not found';
-    details = err.message;
-  } else if (err.message.includes('mismatch')) {
+    details = errorMessage;
+  } else if (errorMessage.includes && errorMessage.includes('mismatch')) {
     statusCode = 400;
     message = 'Request correlation error';
-    details = err.message;
-  } else if (err.message.includes('not properly configured')) {
+    details = errorMessage;
+  } else if (errorMessage.includes && errorMessage.includes('not properly configured')) {
     statusCode = 503;
     message = 'Service configuration error';
     details = 'Server is not properly configured. Please check environment variables.';
-  } else if (err.message.includes('timeout')) {
+  } else if (errorMessage.includes && errorMessage.includes('timeout')) {
     statusCode = 408;
     message = 'Request timeout';
     details = 'The request took too long to process. Please try again.';
@@ -111,7 +146,7 @@ const errorHandler = (err, req, res, next) => {
 
   const errorResponse = {
     error: message,
-    details: details || (process.env.NODE_ENV === 'development' ? err.message : 'An unexpected error occurred'),
+    details: details || (process.env.NODE_ENV === 'development' ? errorMessage : 'An unexpected error occurred'),
     timestamp: new Date().toISOString()
   };
 
