@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orchid Republic - AI Command Center</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Mobile Menu Toggle -->
+        <button class="mobile-menu-toggle" id="mobileMenuToggle">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <line x1="3" y1="12" x2="21" y2="12"></line>
+                <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+        </button>
+
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="company-logo">
+                    <div class="logo-icon">OR</div>
+                    <div class="company-info">
+                        <h3>Orchid Republic</h3>
+                        <span class="tagline">AI-Powered Business Solutions</span>
+                        <p>Command Center</p>
+                        <small>Multi-Agent Workforce</small>
+                    </div>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <div class="nav-item active" data-section="dashboard">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="7" height="7"></rect>
+                        <rect x="14" y="3" width="7" height="7"></rect>
+                        <rect x="14" y="14" width="7" height="7"></rect>
+                        <rect x="3" y="14" width="7" height="7"></rect>
+                    </svg>
+                    Dashboard
+                </div>
+
+                <div class="nav-item" data-section="employees">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                    AI Employees
+                </div>
+
+                <div class="nav-item" data-section="leads">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                        <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                    </svg>
+                    Lead Management
+                </div>
+
+                <div class="nav-item" data-section="calls">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                    </svg>
+                    Voice Calls
+                </div>
+
+                <div class="nav-item" data-section="campaigns">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                    </svg>
+                    Campaigns
+                </div>
+
+                <div class="nav-item" data-section="landing-pages">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                        <line x1="8" y1="21" x2="16" y2="21"></line>
+                        <line x1="12" y1="17" x2="12" y2="21"></line>
+                    </svg>
+                    Landing Pages
+                </div>
+
+                <div class="nav-item" data-section="branding">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="3"></circle>
+                        <path d="M12 1v6m0 6v6m11-7h-6m-6 0H1m15.5-6.5l-4.24 4.24M7.76 16.24l-4.24 4.24m12.73 0l-4.24-4.24M7.76 7.76L3.52 3.52"></path>
+                    </svg>
+                    Branding
+                </div>
+
+                <div class="nav-item" data-section="status">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+                    </svg>
+                    System Status
+                </div>
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Dashboard Section -->
+            <div class="content-section active" id="dashboard-section">
+                <div class="page-header">
+                    <div>
+                        <h1>AI Command Center</h1>
+                        <p>Monitor and manage your AI workforce performance, leads, and campaigns in real-time.</p>
+                    </div>
+                    <div class="header-actions">
+                        <button class="btn secondary">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                            </svg>
+                            Export Report
+                        </button>
+                        <button class="btn primary">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12,6 12,12 16,14"></polyline>
+                            </svg>
+                            Real-time View
+                        </button>
+                    </div>
+                </div>
+
+                <div class="dashboard-grid">
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <h3>AI Employee Status</h3>
+                            <svg class="card-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                        </div>
+                        <div class="employee-status-list">
+                            <div class="employee-status-item">
+                                <div class="status-dot online"></div>
+                                <div>
+                                    <strong>AI Brenden</strong>
+                                    <p>Lead Research Specialist - Active</p>
+                                </div>
+                            </div>
+                            <div class="employee-status-item">
+                                <div class="status-dot online"></div>
+                                <div>
+                                    <strong>AI Van</strong>
+                                    <p>Digital Marketing Designer - Active</p>
+                                </div>
+                            </div>
+                            <div class="employee-status-item">
+                                <div class="status-dot offline"></div>
+                                <div>
+                                    <strong>AI Angel</strong>
+                                    <p>Voice Outreach Manager - Setup Required</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <h3>Today's Metrics</h3>
+                            <svg class="card-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="18" y1="20" x2="18" y2="10"></line>
+                                <line x1="12" y1="20" x2="12" y2="4"></line>
+                                <line x1="6" y1="20" x2="6" y2="14"></line>
+                            </svg>
+                        </div>
+                        <div class="metric-row">
+                            <span class="metric-label">Leads Generated</span>
+                            <span class="metric-value">47</span>
+                        </div>
+                        <div class="metric-row">
+                            <span class="metric-label">Pages Created</span>
+                            <span class="metric-value">12</span>
+                        </div>
+                        <div class="metric-row">
+                            <span class="metric-label">Calls Made</span>
+                            <span class="metric-value">23</span>
+                        </div>
+                        <div class="metric-row">
+                            <span class="metric-label">Conversion Rate</span>
+                            <span class="metric-value">18.5%</span>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-card wide">
+                        <div class="card-header">
+                            <h3>Recent Activity</h3>
+                            <svg class="card-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="22,12 18,12 15,21 9,3 6,12 2,12"></polyline>
+                            </svg>
+                        </div>
+                        <div class="activity-list">
+                            <div class="activity-item">
+                                <div class="activity-time">2 min ago</div>
+                                <div class="activity-description">AI Brenden completed lead research for "Wedding Venues in Los Angeles" - 15 qualified leads found</div>
+                            </div>
+                            <div class="activity-item">
+                                <div class="activity-time">8 min ago</div>
+                                <div class="activity-description">AI Van created landing page for "Premium Event Planning Services" with 94% optimization score</div>
+                            </div>
+                            <div class="activity-item">
+                                <div class="activity-time">15 min ago</div>
+                                <div class="activity-description">New campaign "Q1 Lead Generation" launched with 3 AI employees assigned</div>
+                            </div>
+                            <div class="activity-item">
+                                <div class="activity-time">23 min ago</div>
+                                <div class="activity-description">AI Brenden identified 8 high-value prospects in the luxury catering segment</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI Employees Section -->
+            <div class="content-section" id="employees-section">
+                <div class="employees-layout">
+                    <div class="team-panel">
+                        <div class="panel-header">
+                            <h2>AI Team</h2>
+                            <p>Manage your AI workforce</p>
+                            <button class="add-employee-btn">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="12" y1="8" x2="12" y2="16"></line>
+                                    <line x1="8" y1="12" x2="16" y2="12"></line>
+                                </svg>
+                                Add Employee
+                            </button>
+                        </div>
+
+                        <div class="team-section">
+                            <h3>Active Employees</h3>
+                            <div class="team-members">
+                                <div class="team-member active" data-employee="brenden">
+                                    <div class="member-avatar">
+                                        <img src="https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=100&h=100&fit=crop&crop=face" alt="AI Brenden">
+                                        <div class="status-indicator online"></div>
+                                    </div>
+                                    <div class="member-info">
+                                        <div class="member-name">AI Brenden</div>
+                                        <div class="member-role">Lead Research Specialist</div>
+                                        <div class="member-tags">
+                                            <span class="tag specialist">Lead Gen</span>
+                                        </div>
+                                    </div>
+                                    <div class="member-stats">
+                                        <div class="notification-badge">3</div>
+                                    </div>
+                                </div>
+
+                                <div class="team-member" data-employee="van">
+                                    <div class="member-avatar">
+                                        <img src="https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=100&h=100&fit=crop&crop=face" alt="AI Van">
+                                        <div class="status-indicator online"></div>
+                                    </div>
+                                    <div class="member-info">
+                                        <div class="member-name">AI Van</div>
+                                        <div class="member-role">Digital Marketing Designer</div>
+                                        <div class="member-tags">
+                                            <span class="tag marketing">Design</span>
+                                        </div>
+                                    </div>
+                                    <div class="member-stats">
+                                        <div class="notification-badge">1</div>
+                                    </div>
+                                </div>
+
+                                <div class="team-member" data-employee="angel">
+                                    <div class="member-avatar">
+                                        <img src="https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=100&h=100&fit=crop&crop=face" alt="AI Angel">
+                                        <div class="status-indicator offline"></div>
+                                    </div>
+                                    <div class="member-info">
+                                        <div class="member-name">AI Angel</div>
+                                        <div class="member-role">Voice Outreach Manager</div>
+                                        <div class="member-tags">
+                                            <span class="tag voice">Voice</span>
+                                        </div>
+                                    </div>
+                                    <div class="member-stats">
+                                        <div class="notification-badge">0</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="chat-interface">
+                        <div class="chat-header">
+                            <div class="employee-info">
+                                <div class="employee-avatar">
+                                    <img id="current-employee-avatar" src="https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=100&h=100&fit=crop&crop=face" alt="Current Employee">
+                                    <div class="status-indicator online"></div>
+                                </div>
+                                <div class="employee-details">
+                                    <h3 id="current-employee-name">AI Brenden</h3>
+                                    <div class="employee-role-tags">
+                                        <span class="role-tag" id="current-employee-role">lead scraper</span>
+                                        <span class="role-tag" id="current-employee-specialty">Lead Research Specialist</span>
+                                    </div>
+                                    <div class="employee-badges">
+                                        <span class="badge active">Active</span>
+                                        <span class="badge performance">High Performance</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="chat-controls">
+                                <button class="control-btn" id="configureBtn">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="3"></circle>
+                                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1 1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                                    </svg>
+                                    Configure
+                                </button>
+                                <button class="control-btn primary" id="newChatBtn">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                                        <path d="M12 7v6m3-3H9"></path>
+                                    </svg>
+                                    New Chat with AI Brenden
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="employee-description">
+                            <p id="employee-description">Expert data researcher specializing in B2B lead generation. I extract high-quality prospects from LinkedIn, Google Maps, and Yellow Pages with precision and attention to detail.</p>
+                        </div>
+
+                        <div class="chat-tabs">
+                            <button class="tab-btn active" data-tab="chat">Chat</button>
+                            <button class="tab-btn" data-tab="tasks">Tasks</button>
+                            <button class="tab-btn" data-tab="guidelines">Guidelines</button>
+                            <button class="tab-btn" data-tab="performance">Performance</button>
+                        </div>
+
+                        <div class="chat-content">
+                            <div class="tab-content active" id="chat-tab">
+                                <div class="quick-actions">
+                                    <!-- Quick actions will be populated by JavaScript -->
+                                </div>
+
+                                <div class="chat-messages" id="chatMessages">
+                                    <div class="welcome-message">
+                                        <div class="welcome-avatar">
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                                <circle cx="12" cy="7" r="4"></circle>
+                                            </svg>
+                                        </div>
+                                        <div class="welcome-content">
+                                            <h4>Hi! I'm AI Brenden, your Lead Research Specialist.</h4>
+                                            <p>Ask me to help with lead generation and research or use the quick actions above.</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="chat-input-container">
+                                    <form class="chat-form" id="chatForm">
+                                        <div class="input-wrapper">
+                                            <textarea 
+                                                id="messageInput" 
+                                                placeholder="Ask AI Brenden to help you... (e.g., 'Find florists in Los Angeles')"
+                                                rows="1"
+                                            ></textarea>
+                                            <button type="submit" class="send-button" id="sendButton" disabled>
+                                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                    <line x1="22" y1="2" x2="11" y2="13"></line>
+                                                    <polygon points="22,2 15,22 11,13 2,9 22,2"></polygon>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                        <div class="character-count">
+                                            <span id="charCount">0</span> / 4000
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
+                            <div class="tab-content" id="tasks-tab">
+                                <div class="tasks-content">
+                                    <h4>Current Tasks</h4>
+                                    <div class="task-list">
+                                        <div class="task-item completed">
+                                            <div class="task-status"></div>
+                                            <div>
+                                                <div class="task-title">Research wedding venues in Los Angeles</div>
+                                                <div class="task-meta">Completed 2 hours ago • 15 leads found</div>
+                                            </div>
+                                        </div>
+                                        <div class="task-item in-progress">
+                                            <div class="task-status"></div>
+                                            <div>
+                                                <div class="task-title">Analyze competitor pricing strategies</div>
+                                                <div class="task-meta">In progress • 60% complete</div>
+                                            </div>
+                                        </div>
+                                        <div class="task-item pending">
+                                            <div class="task-status"></div>
+                                            <div>
+                                                <div class="task-title">Generate leads for corporate catering</div>
+                                                <div class="task-meta">Queued • Estimated 45 minutes</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="tab-content" id="guidelines-tab">
+                                <div class="guidelines-content">
+                                    <h4>Operating Guidelines</h4>
+                                    <div class="guideline-section">
+                                        <h5>Lead Quality Standards</h5>
+                                        <ul>
+                                            <li>Verify business contact information</li>
+                                            <li>Ensure decision-maker identification</li>
+                                            <li>Check business legitimacy and reputation</li>
+                                            <li>Validate target market alignment</li>
+                                        </ul>
+                                    </div>
+                                    <div class="guideline-section">
+                                        <h5>Research Methodology</h5>
+                                        <ul>
+                                            <li>Use multiple data sources for verification</li>
+                                            <li>Prioritize recent and active businesses</li>
+                                            <li>Focus on businesses with growth indicators</li>
+                                            <li>Document source and confidence level</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="tab-content" id="performance-tab">
+                                <div class="performance-content">
+                                    <h4>Performance Metrics</h4>
+                                    <div class="metrics-grid">
+                                        <div class="metric-card">
+                                            <div class="metric-value">94%</div>
+                                            <div class="metric-label">Accuracy Rate</div>
+                                        </div>
+                                        <div class="metric-card">
+                                            <div class="metric-value">47</div>
+                                            <div class="metric-label">Leads Today</div>
+                                        </div>
+                                        <div class="metric-card">
+                                            <div class="metric-value">2.3m</div>
+                                            <div class="metric-label">Avg Response Time</div>
+                                        </div>
+                                        <div class="metric-card">
+                                            <div class="metric-value">18.5%</div>
+                                            <div class="metric-label">Conversion Rate</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lead Management Section -->
+            <div class="content-section" id="leads-section">
+                <div class="page-header">
+                    <div>
+                        <h1>Lead Management</h1>
+                        <p>Track and manage leads generated by your AI research specialists.</p>
+                    </div>
+                    <div class="header-actions">
+                        <button class="btn secondary">Export CSV</button>
+                        <button class="btn primary">Generate New Leads</button>
+                    </div>
+                </div>
+
+                <div class="leads-filters">
+                    <div class="filter-group">
+                        <label>Status</label>
+                        <select class="filter-select">
+                            <option>All Statuses</option>
+                            <option>New</option>
+                            <option>Contacted</option>
+                            <option>Qualified</option>
+                            <option>Converted</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Industry</label>
+                        <select class="filter-select">
+                            <option>All Industries</option>
+                            <option>Wedding Services</option>
+                            <option>Corporate Events</option>
+                            <option>Catering</option>
+                            <option>Photography</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Location</label>
+                        <input type="text" class="filter-input" placeholder="Enter location...">
+                    </div>
+                    <div class="filter-group">
+                        <label>Score</label>
+                        <select class="filter-select">
+                            <option>All Scores</option>
+                            <option>High (4-5)</option>
+                            <option>Medium (3-4)</option>
+                            <option>Low (1-3)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="leads-table-container">
+                    <table class="leads-table">
+                        <thead>
+                            <tr>
+                                <th>Business</th>
+                                <th>Contact</th>
+                                <th>Location</th>
+                                <th>Industry</th>
+                                <th>Score</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="business-info">
+                                        <strong>Elegant Events LA</strong>
+                                        <small>www.elegant eventsla.com</small>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="contact-info">
+                                        <strong>Sarah Johnson</strong>
+                                        <small>Event Director<br>sarah@eleganteventsla.com<br>(555) 123-4567</small>
+                                    </div>
+                                </td>
+                                <td>Los Angeles, CA</td>
+                                <td>Wedding Services</td>
+                                <td><span class="score high">4.8</span></td>
+                                <td><span class="status new">New</span></td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn secondary">Contact</button>
+                                        <button class="btn primary">View</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="business-info">
+                                        <strong>Premier Catering Co</strong>
+                                        <small>www.premiercatering.com</small>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="contact-info">
+                                        <strong>Michael Chen</strong>
+                                        <small>Operations Manager<br>m.chen@premiercatering.com<br>(555) 987-6543</small>
+                                    </div>
+                                </td>
+                                <td>Beverly Hills, CA</td>
+                                <td>Catering</td>
+                                <td><span class="score high">4.6</span></td>
+                                <td><span class="status contacted">Contacted</span></td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn secondary">Follow Up</button>
+                                        <button class="btn primary">View</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Voice Calls Section -->
+            <div class="content-section" id="calls-section">
+                <div class="page-header">
+                    <div>
+                        <h1>Voice Calls</h1>
+                        <p>Manage AI-powered voice outreach campaigns and call analytics.</p>
+                    </div>
+                    <div class="header-actions">
+                        <button class="btn secondary">Call Reports</button>
+                        <button class="btn primary">Start Campaign</button>
+                    </div>
+                </div>
+
+                <div class="calls-dashboard">
+                    <div class="call-stats">
+                        <div class="stat-card">
+                            <div class="stat-value">156</div>
+                            <div class="stat-label">Calls Today</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">23%</div>
+                            <div class="stat-label">Connect Rate</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">12</div>
+                            <div class="stat-label">Appointments</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">$4,200</div>
+                            <div class="stat-label">Pipeline Value</div>
+                        </div>
+                    </div>
+
+                    <div class="call-campaigns">
+                        <h3>Active Campaigns</h3>
+                        <div class="campaign-list">
+                            <div class="campaign-item">
+                                <div class="campaign-info">
+                                    <h4>Wedding Venue Outreach</h4>
+                                    <p>Targeting premium wedding venues in Los Angeles area</p>
+                                </div>
+                                <div class="campaign-stats">
+                                    <span>45 calls made</span>
+                                    <span>12 connects</span>
+                                    <span>3 appointments</span>
+                                </div>
+                                <div class="campaign-actions">
+                                    <button class="btn secondary">Pause</button>
+                                    <button class="btn primary">View Details</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Campaigns Section -->
+            <div class="content-section" id="campaigns-section">
+                <div class="page-header">
+                    <div>
+                        <h1>Marketing Campaigns</h1>
+                        <p>Create and manage multi-channel marketing campaigns with AI assistance.</p>
+                    </div>
+                    <div class="header-actions">
+                        <button class="btn secondary">Templates</button>
+                        <button class="btn primary">New Campaign</button>
+                    </div>
+                </div>
+
+                <div class="campaigns-grid">
+                    <div class="campaign-card">
+                        <div class="campaign-header">
+                            <h3>Q1 Lead Generation</h3>
+                            <span class="campaign-status active">Active</span>
+                        </div>
+                        <div class="campaign-content">
+                            <p>Multi-channel campaign targeting wedding industry professionals with personalized outreach and landing pages.</p>
+                            <div class="campaign-metrics">
+                                <div class="metric">
+                                    <span class="metric-value">1,247</span>
+                                    <span class="metric-label">Leads</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-value">18.5%</span>
+                                    <span class="metric-label">Conversion</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-value">$12.4K</span>
+                                    <span class="metric-label">Revenue</span>
+                                </div>
+                            </div>
+                            <div class="campaign-actions">
+                                <button class="btn secondary">Edit</button>
+                                <button class="btn primary">View Report</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="campaign-card">
+                        <div class="campaign-header">
+                            <h3>Corporate Events Push</h3>
+                            <span class="campaign-status draft">Draft</span>
+                        </div>
+                        <div class="campaign-content">
+                            <p>Targeting corporate event planners with premium service offerings and custom landing experiences.</p>
+                            <div class="campaign-metrics">
+                                <div class="metric">
+                                    <span class="metric-value">0</span>
+                                    <span class="metric-label">Leads</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-value">0%</span>
+                                    <span class="metric-label">Conversion</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-value">$0</span>
+                                    <span class="metric-label">Revenue</span>
+                                </div>
+                            </div>
+                            <div class="campaign-actions">
+                                <button class="btn secondary">Edit</button>
+                                <button class="btn primary">Launch</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Landing Pages Section -->
+            <div class="content-section" id="landing-pages-section">
+                <div class="page-header">
+                    <div>
+                        <h1>Landing Pages</h1>
+                        <p>AI-generated landing pages optimized for conversion and lead capture.</p>
+                    </div>
+                    <div class="header-actions">
+                        <button class="btn secondary">Templates</button>
+                        <button class="btn primary">Create Page</button>
+                    </div>
+                </div>
+
+                <div class="landing-pages-grid">
+                    <div class="page-card create-new">
+                        <div class="create-content">
+                            <svg class="create-icon" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="12" y1="8" x2="12" y2="16"></line>
+                                <line x1="8" y1="12" x2="16" y2="12"></line>
+                            </svg>
+                            <h3>Create New Page</h3>
+                            <p>Let AI Van design a high-converting landing page for your campaign</p>
+                        </div>
+                    </div>
+
+                    <div class="page-card">
+                        <div class="page-preview">
+                            <img src="https://images.pexels.com/photos/196644/pexels-photo-196644.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&fit=crop" alt="Wedding Services Landing Page">
+                        </div>
+                        <div class="page-info">
+                            <h3>Premium Wedding Services</h3>
+                            <p>Elegant landing page targeting luxury wedding market with lead capture form and service showcase.</p>
+                            <div class="page-stats">
+                                <span>94% Optimization Score</span>
+                                <span>156 Conversions</span>
+                                <span>23.4% CVR</span>
+                            </div>
+                            <div class="page-actions">
+                                <button class="btn secondary">Edit</button>
+                                <button class="btn primary">View Live</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="page-card">
+                        <div class="page-preview">
+                            <img src="https://images.pexels.com/photos/1267320/pexels-photo-1267320.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&fit=crop" alt="Corporate Catering Landing Page">
+                        </div>
+                        <div class="page-info">
+                            <h3>Corporate Catering Solutions</h3>
+                            <p>Professional landing page for B2B catering services with quote request functionality.</p>
+                            <div class="page-stats">
+                                <span>87% Optimization Score</span>
+                                <span>89 Conversions</span>
+                                <span>18.7% CVR</span>
+                            </div>
+                            <div class="page-actions">
+                                <button class="btn secondary">Edit</button>
+                                <button class="btn primary">View Live</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Branding Section -->
+            <div class="content-section" id="branding-section">
+                <div class="page-header">
+                    <div>
+                        <h1>Brand Management</h1>
+                        <p>Customize your brand colors and visual identity across all AI-generated content.</p>
+                    </div>
+                    <div class="header-actions">
+                        <button class="btn secondary">Reset to Default</button>
+                        <button class="btn primary" id="saveColorsBtn">Save Changes</button>
+                    </div>
+                </div>
+
+                <div class="branding-content">
+                    <div class="brand-section">
+                        <h3>Color Palette</h3>
+                        <div class="color-palette">
+                            <div class="color-group">
+                                <label>Primary Color</label>
+                                <div class="color-input-group">
+                                    <input type="color" id="primaryPicker" value="#ec4899">
+                                    <input type="text" id="primaryInput" value="#EC4899" maxlength="7">
+                                </div>
+                            </div>
+                            <div class="color-group">
+                                <label>Secondary Color</label>
+                                <div class="color-input-group">
+                                    <input type="color" id="secondaryPicker" value="#64748b">
+                                    <input type="text" id="secondaryInput" value="#64748B" maxlength="7">
+                                </div>
+                            </div>
+                            <div class="color-group">
+                                <label>Accent Color</label>
+                                <div class="color-input-group">
+                                    <input type="color" id="accentPicker" value="#f97316">
+                                    <input type="text" id="accentInput" value="#F97316" maxlength="7">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- System Status Section -->
+            <div class="content-section" id="status-section">
+                <div class="page-header">
+                    <div>
+                        <h1>System Status</h1>
+                        <p>Monitor AI employee health, webhook connections, and system performance.</p>
+                    </div>
+                    <div class="header-actions">
+                        <button class="btn secondary">Download Logs</button>
+                        <button class="btn primary">Refresh Status</button>
+                    </div>
+                </div>
+
+                <div class="status-grid">
+                    <div class="status-card">
+                        <div class="status-header">
+                            <h3>AI Employees</h3>
+                            <div class="status-indicator online"></div>
+                        </div>
+                        <div class="status-content">
+                            <div class="status-item">
+                                <span>AI Brenden</span>
+                                <span class="status-badge online">Online</span>
+                            </div>
+                            <div class="status-item">
+                                <span>AI Van</span>
+                                <span class="status-badge online">Online</span>
+                            </div>
+                            <div class="status-item">
+                                <span>AI Angel</span>
+                                <span class="status-badge offline">Setup Required</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="status-card">
+                        <div class="status-header">
+                            <h3>Webhook Health</h3>
+                            <div class="status-indicator online"></div>
+                        </div>
+                        <div class="status-content">
+                            <div class="status-item">
+                                <span>Brenden Webhook</span>
+                                <span class="status-badge online">Connected</span>
+                            </div>
+                            <div class="status-item">
+                                <span>Van Webhook</span>
+                                <span class="status-badge online">Connected</span>
+                            </div>
+                            <div class="status-item">
+                                <span>Angel Webhook</span>
+                                <span class="status-badge offline">Not Configured</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="status-card">
+                        <div class="status-header">
+                            <h3>System Performance</h3>
+                            <div class="status-indicator online"></div>
+                        </div>
+                        <div class="status-content">
+                            <div class="status-item">
+                                <span>Response Time</span>
+                                <span>2.3s avg</span>
+                            </div>
+                            <div class="status-item">
+                                <span>Success Rate</span>
+                                <span>99.2%</span>
+                            </div>
+                            <div class="status-item">
+                                <span>Active Threads</span>
+                                <span>12</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Configuration Modal -->
+    <div class="modal" id="configModal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Assistant Configuration</h2>
+                <button class="close-button" id="closeModal">&times;</button>
+            </div>
+            <div class="modal-body" id="configContent">
+                <!-- Configuration content will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Typing Indicator Template -->
+    <div class="message assistant" id="typingTemplate" style="display: none;">
+        <div class="message-content">
+            <div class="typing-indicator">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
