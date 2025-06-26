@@ -1,8 +1,9 @@
 class AICommandCenter {
     constructor() {
         this.currentEmployee = 'brenden';
-        this.currentThreadId = null; // Track active thread
+        this.currentThreadId = null; // Track active thread per employee
         this.conversationHistory = new Map(); // Store conversation history per employee
+        this.pendingRequests = new Map(); // Track pending requests per employee
         this.employees = {
             brenden: {
                 name: 'AI Brenden',
@@ -105,10 +106,10 @@ class AICommandCenter {
     startNewChat() {
         console.log(`🆕 Starting new chat for ${this.employees[this.currentEmployee].name}`);
         
-        // Clear current thread
+        // Clear current thread for THIS employee only
         this.currentThreadId = null;
         
-        // Clear conversation history for current employee
+        // Clear conversation history for current employee only
         this.conversationHistory.delete(this.currentEmployee);
         
         // Clear chat messages
@@ -132,16 +133,18 @@ class AICommandCenter {
             const saved = localStorage.getItem('orchid-conversation-history');
             if (saved) {
                 const parsed = JSON.parse(saved);
-                this.conversationHistory = new Map(Object.entries(parsed.conversations || {}));
                 
-                // Restore current thread ID if exists
-                if (parsed.currentThreads && parsed.currentThreads[this.currentEmployee]) {
-                    this.currentThreadId = parsed.currentThreads[this.currentEmployee];
+                // FIXED: Load conversations per employee separately
+                this.conversationHistory = new Map();
+                if (parsed.conversations) {
+                    Object.entries(parsed.conversations).forEach(([employeeId, history]) => {
+                        this.conversationHistory.set(employeeId, history);
+                    });
                 }
                 
+                // FIXED: Don't restore thread ID globally - it will be set per employee
                 console.log('📚 Loaded conversation history:', {
-                    employees: Array.from(this.conversationHistory.keys()),
-                    currentThread: this.currentThreadId
+                    employees: Array.from(this.conversationHistory.keys())
                 });
             }
         } catch (error) {
@@ -152,8 +155,9 @@ class AICommandCenter {
     
     saveConversationHistory() {
         try {
+            // FIXED: Save current thread ID per employee
             const currentThreads = {};
-            if (this.currentThreadId) {
+            if (this.currentThreadId && this.currentEmployee) {
                 currentThreads[this.currentEmployee] = this.currentThreadId;
             }
             
@@ -164,7 +168,7 @@ class AICommandCenter {
             };
             
             localStorage.setItem('orchid-conversation-history', JSON.stringify(toSave));
-            console.log('💾 Saved conversation history');
+            console.log('💾 Saved conversation history for', this.currentEmployee);
         } catch (error) {
             console.error('Failed to save conversation history:', error);
         }
@@ -190,7 +194,7 @@ class AICommandCenter {
             this.addMessageToUI(msg.content, msg.sender, msg.timestamp, false);
         });
         
-        // Restore thread ID
+        // FIXED: Restore thread ID for THIS employee only
         this.currentThreadId = history.threadId || null;
         
         // Update chat status
@@ -203,6 +207,7 @@ class AICommandCenter {
     }
     
     addMessageToHistory(content, sender, threadId = null) {
+        // FIXED: Store history per employee separately
         if (!this.conversationHistory.has(this.currentEmployee)) {
             this.conversationHistory.set(this.currentEmployee, {
                 messages: [],
@@ -213,13 +218,13 @@ class AICommandCenter {
         
         const history = this.conversationHistory.get(this.currentEmployee);
         
-        // Update thread ID if provided
+        // Update thread ID if provided for THIS employee
         if (threadId) {
             history.threadId = threadId;
             this.currentThreadId = threadId;
         }
         
-        // Add message
+        // Add message to THIS employee's history
         history.messages.push({
             content,
             sender,
@@ -465,6 +470,9 @@ class AICommandCenter {
         
         console.log(`🔄 Switching from ${this.employees[previousEmployee]?.name} to ${employee.name}`);
         
+        // FIXED: Clear current thread when switching employees
+        this.currentThreadId = null;
+        
         // Update chat header
         document.getElementById('current-employee-avatar').src = employee.avatar;
         document.getElementById('current-employee-name').textContent = employee.name;
@@ -475,7 +483,7 @@ class AICommandCenter {
         // Update placeholder
         this.messageInput.placeholder = `Ask ${employee.name} to help you... (e.g., 'Find florists in Los Angeles')`;
         
-        // Restore conversation history for this employee
+        // Restore conversation history for THIS employee
         this.restoreConversationForEmployee(employeeId);
         
         // If no history, show welcome message
@@ -813,12 +821,12 @@ class AICommandCenter {
                 employee: this.currentEmployee
             };
             
-            // Include thread ID if we have an active conversation
+            // Include thread ID if we have an active conversation for THIS employee
             if (this.currentThreadId) {
                 requestBody.thread_id = this.currentThreadId;
-                console.log(`📝 Using existing thread: ${this.currentThreadId}`);
+                console.log(`📝 Using existing thread for ${this.currentEmployee}: ${this.currentThreadId}`);
             } else {
-                console.log('🆕 Creating new thread for conversation');
+                console.log(`🆕 Creating new thread for ${this.currentEmployee}`);
             }
             
             console.log('📤 Request body:', requestBody);
@@ -850,14 +858,24 @@ class AICommandCenter {
             const data = await response.json();
             console.log('✅ JSON data received:', data);
             
-            if (!response.ok) {
-                throw new Error(data.details || data.error || `HTTP ${response.status}`);
-            }
-            
             // Hide typing indicator
             this.hideTypingIndicator();
             
-            // Store thread ID for future messages
+            if (!response.ok) {
+                // Handle specific error cases
+                if (response.status === 409) {
+                    // Thread busy error
+                    this.addErrorMessage(`${data.details || data.error}`);
+                    if (data.status === 'requires_action') {
+                        this.addToolCallStatus([{function: 'Waiting for tool completion...'}]);
+                    }
+                } else {
+                    throw new Error(data.details || data.error || `HTTP ${response.status}`);
+                }
+                return;
+            }
+            
+            // Store thread ID for future messages for THIS employee
             if (data.thread_id) {
                 this.currentThreadId = data.thread_id;
                 this.addMessageToHistory(message, 'user', data.thread_id);
@@ -928,7 +946,7 @@ class AICommandCenter {
         this.chatMessages.appendChild(messageDiv);
         this.scrollToBottom();
         
-        // Add to conversation history
+        // Add to conversation history for THIS employee
         if (addToHistory) {
             this.addMessageToHistory(content, sender);
         }
@@ -1000,6 +1018,7 @@ class AICommandCenter {
 
 // Initialize command center when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('🚀 Initializing AI Command Center...');
     new AICommandCenter();
 });
 
