@@ -85,7 +85,7 @@ router.get('/assistant-info', async (req, res, next) => {
 
 /**
  * POST /ask - Handle user messages and assistant interactions
- * FIXED: PROPER EMPLOYEE-SPECIFIC ROUTING
+ * ENHANCED: Better handling of active runs and thread state
  */
 router.post('/ask', validateAskRequest, async (req, res, next) => {
   let threadId = null;
@@ -145,6 +145,52 @@ router.post('/ask', validateAskRequest, async (req, res, next) => {
     if (thread_id) {
       console.log('Step 1: Using existing thread:', thread_id);
       threadId = thread_id;
+      
+      // ENHANCED: Check if there's an active run on this thread
+      try {
+        console.log('🔍 Checking for active runs on thread...');
+        const runs = await openaiService.client.beta.threads.runs.list(threadId, { limit: 1 });
+        
+        if (runs.data.length > 0) {
+          const latestRun = runs.data[0];
+          console.log(`📊 Latest run status: ${latestRun.status} (${latestRun.id})`);
+          
+          if (['queued', 'in_progress', 'requires_action'].includes(latestRun.status)) {
+            console.log(`⚠️ Thread ${threadId} has active run ${latestRun.id} with status: ${latestRun.status}`);
+            
+            // If it's requires_action, check if we have pending tool calls
+            if (latestRun.status === 'requires_action') {
+              const pendingCalls = webhookHandler.getPendingCalls().filter(call => 
+                call.threadId === threadId && call.runId === latestRun.id
+              );
+              
+              if (pendingCalls.length > 0) {
+                console.log(`🔧 Found ${pendingCalls.length} pending tool calls for this run`);
+                return res.status(409).json({
+                  error: 'Thread busy with tool calls',
+                  details: `${employeeConfig.name} is currently processing ${pendingCalls.length} tool call(s). Please wait for completion or send the webhook response.`,
+                  thread_id: threadId,
+                  run_id: latestRun.id,
+                  pending_tool_calls: pendingCalls.length,
+                  employee: employeeConfig,
+                  status: 'requires_action'
+                });
+              }
+            } else {
+              return res.status(409).json({
+                error: 'Thread busy',
+                details: `${employeeConfig.name} is currently processing another request. Please wait for completion.`,
+                thread_id: threadId,
+                run_id: latestRun.id,
+                current_status: latestRun.status,
+                employee: employeeConfig
+              });
+            }
+          }
+        }
+      } catch (runCheckError) {
+        console.warn('⚠️ Could not check run status, proceeding anyway:', runCheckError.message);
+      }
     } else {
       console.log('Step 1: Creating new thread...');
       let thread;
@@ -175,6 +221,12 @@ router.post('/ask', validateAskRequest, async (req, res, next) => {
       } catch (error) {
         messageRetries--;
         console.error(`❌ Message addition failed, retries left: ${messageRetries}`, error.message);
+        
+        // If it's an active run error, provide specific guidance
+        if (error.message && error.message.includes('while a run') && error.message.includes('is active')) {
+          throw new Error(`Cannot add message to ${employeeConfig.name}'s thread while processing. Please wait for the current operation to complete or check for pending tool calls.`);
+        }
+        
         if (messageRetries === 0) throw error;
         await new Promise(resolve => setTimeout(resolve, 1000));
       }
@@ -356,7 +408,7 @@ router.post('/ask', validateAskRequest, async (req, res, next) => {
 
 /**
  * POST /webhook-response - Handle webhook responses with tool outputs
- * FIXED: PROPER EMPLOYEE CONTEXT VALIDATION
+ * ENHANCED: Better validation and error handling
  */
 router.post('/webhook-response', validateWebhookResponse, async (req, res, next) => {
   let processedResponse = null;
